@@ -11,9 +11,9 @@ public class CandleFlicker : MonoBehaviour
     private float[] durations;
 
     Color GenerateNewColour() {
-        float hue = Random.Range(0.02f, 0.11f);
-        float saturation = Random.Range(0.5f, 1.0f);
-        float value = Random.Range(0.875f, 1.0f);
+        float hue = Random.Range(0.055f, 0.075f);
+        float saturation = Random.Range(0.8f, 1.0f);
+        float value = Random.Range(0.75f, 1.0f);
 
         return Color.HSVToRGB(hue, saturation, value);
     }
@@ -46,12 +46,17 @@ public class CandleFlicker : MonoBehaviour
     void UpdateCandle(Transform candle, Color beforeColour, Color afterColour, float difference, float duration, int i) {
         float mixRatio = Mathf.Clamp(Time.time - difference, 0.0f, Mathf.Infinity) / duration;
 
+        int materialIndex = 0;
+
+        if (candle.name.Contains("Lantern")) {
+            materialIndex = 1;
+        }
+
         // Change the colour of the candle's first material and the light's colour
-        candle.GetChild(1).GetComponent<MeshRenderer>().materials[0].SetVector("_EmissionColor", Color.Lerp(beforeColour, afterColour, mixRatio));
+        candle.GetChild(1).GetComponent<MeshRenderer>().materials[materialIndex].SetVector("_EmissionColor", Color.Lerp(beforeColour, afterColour, mixRatio));
         candle.GetChild(2).GetComponent<Light>().color = Color.Lerp(beforeColour, afterColour, mixRatio);
 
         if (mixRatio >= 1.0f) {
-            Debug.Log("New colour " + i + ", " + Time.time + ", " + difference + ", " + duration + ", " + mixRatio);
             differences[i] = Time.time;
             durations[i] = Random.Range(0.0125f, 0.5f);
 
