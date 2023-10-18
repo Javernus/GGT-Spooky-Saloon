@@ -6,12 +6,12 @@ using UnityEngine;
 // we can use sphereCollider to check if the ball has collided with another object
 public class RigidBall : MonoBehaviour
 {
-    private float impulse;
-    private Vector2 position;
-    private float orientation; // angle
-    private Vector2 velocity;
-    private float velocity_constraint = 3;
-    private float drag = 0;
+    public float impulse;
+    public Vector2 position;
+    public float orientation; // angle
+    public Vector2 velocity;
+    public float velocity_constraint = 3;
+    public float drag = 0;
 
     
     // Start is called before the first frame update
