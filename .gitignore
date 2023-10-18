@@ -5,3 +5,4 @@ Logs/
 UserSettings/
 **/*.meta
 Assembly-CSharp.csproj
+ProjectSettings/ProjectSettings.asset
