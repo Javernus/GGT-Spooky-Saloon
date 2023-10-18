@@ -41,14 +41,14 @@ public class BallControler : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A))
         {
             ball.orientation = Quaternion.Euler(0, ball.orientation.eulerAngles.y + 45, 0);
-            ball.transform.Rotate(0, 45, 0);
+            ball.transform.Rotate(0, -45, 0);
             Debug.Log("orientation is " + ball.orientation);
         }
 
         if (Input.GetKeyDown(KeyCode.D))
         {
             ball.orientation = Quaternion.Euler(0, ball.orientation.eulerAngles.y - 45, 0);
-            ball.transform.Rotate(0, -45, 0);
+            ball.transform.Rotate(0, 45, 0);
             Debug.Log("orientation is " + ball.orientation);
         }
     }
