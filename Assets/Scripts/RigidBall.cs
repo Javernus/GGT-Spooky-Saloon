@@ -22,8 +22,8 @@ public class RigidBall : MonoBehaviour
         orientation = transform.rotation;
         velocity = 0f;
         impulse = 0f;
-        velocity_constraint = 2f;
-        drag = 0.2f;
+        velocity_constraint = 15f;
+        drag = 0.2f; // TODO make this a function of speed
     }
 
     void FixedUpdate()
@@ -54,7 +54,7 @@ public class RigidBall : MonoBehaviour
             velocity = 0f;
         }
 
-        position += velocity * 
+        position += velocity * Time.fixedDeltaTime * 
                 new Vector3(
                     Mathf.Cos(orientation.eulerAngles.y * Mathf.Deg2Rad),
                     0f,
