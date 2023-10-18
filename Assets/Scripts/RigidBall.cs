@@ -34,4 +34,6 @@ public class RigidBall : MonoBehaviour
         position += velocity * Time.deltaTime;
         transform.position = position;
     }
+
+    
 }
