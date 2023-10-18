@@ -34,39 +34,4 @@ public class RigidBall : MonoBehaviour
         position += velocity * Time.deltaTime;
         transform.position = position;
     }
-
-   
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            velocity += impulse * new Vector2(Mathf.Cos(orientation), Mathf.Sin(orientation));
-        }
-
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            impulse += 1;
-            Debug.Log("impule is " + impulse);
-        }
-
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            impulse -= 1;
-            Debug.Log("impule is " + impulse);
-        }
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            orientation += Mathf.PI / 2;
-            Debug.Log("orientation is " + orientation);
-        }
-
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            orientation -= Mathf.PI / 2;
-            Debug.Log("orientation is " + orientation);
-        }
-    }
 }
