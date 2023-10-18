@@ -1,5 +1,6 @@
-using Unity.VisualScripting.Dependencies.Sqlite;
+using System.Numerics;
 using UnityEngine;
+using Vector3 = UnityEngine.Vector3;
 public class TableCollider : MonoBehaviour
 {
     // table box collider
@@ -46,9 +47,27 @@ public class TableCollider : MonoBehaviour
         // for every ball, check if it is in table
         foreach (SphereCollider ballCollider in ballColliders)
         {
-            if (!Is_in_table(ballCollider.bounds.center))
+            RigidBall ball = ballCollider.GetComponent<RigidBall>();
+
+            // calculate position of ball in next frame
+            Vector3 position = ball.position + ball.velocity * Time.fixedDeltaTime * 
+                new Vector3(
+                    Mathf.Cos(ball.orientation.eulerAngles.y * Mathf.Deg2Rad),
+                    0f,
+                    Mathf.Sin(ball.orientation.eulerAngles.y * Mathf.Deg2Rad)
+                );
+                
+            if (!Is_in_table(position))
             {
-                Debug.Log("Ball is out of table");
+                // clamp position
+                ball.position = new Vector3(
+                    Mathf.Clamp(ball.position.x, tableCollider.bounds.min.x, tableCollider.bounds.max.x),
+                    ball.position.y,
+                    Mathf.Clamp(ball.position.z, tableCollider.bounds.min.z, tableCollider.bounds.max.z)
+                );
+                
+                // revert velocity
+                ball.velocity *= -1f;
 
             }
         }
