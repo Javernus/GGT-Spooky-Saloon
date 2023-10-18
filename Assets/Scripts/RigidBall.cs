@@ -8,30 +8,57 @@ public class RigidBall : MonoBehaviour
 {
     public float impulse;
     public Vector2 position;
-    public float orientation; // angle
-    public Vector2 velocity;
-    public float velocity_constraint = 3;
-    public float drag = 0;
+    
+    public Quaternion orientation;
+    public float velocity;
+    public float velocity_constraint;
+    public float drag;
 
     
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         position = transform.position;
-        velocity = new Vector2(0, 0);
-        orientation = 0;
-        impulse = 0;
+        orientation = transform.rotation;
+        velocity = 0f;
+        impulse = 0f;
+        velocity_constraint = 2f;
+        drag = 0.2f;
     }
 
     void FixedUpdate()
     {
-        if (velocity.magnitude > velocity_constraint)
+        if (velocity > velocity_constraint)
         {
-            velocity = velocity.normalized * velocity_constraint;
+            velocity = velocity_constraint;
         }
 
-        velocity -= drag * velocity * Time.deltaTime;
-        position += velocity * Time.deltaTime;
+        if (velocity < -velocity_constraint)
+        {
+            velocity = -velocity_constraint;
+        }
+
+        if (velocity > 0f)
+        {
+            velocity -= drag;
+        }
+
+        if (velocity < 0f)
+        {
+            velocity += drag;
+        }
+
+        // if velocity is close to 0, set it to 0
+        if (velocity < 0.1f && velocity > -0.1f)
+        {
+            velocity = 0f;
+        }
+
+        position += velocity * 
+                new Vector2(
+                    Mathf.Cos(orientation.eulerAngles.y * Mathf.Deg2Rad),
+                    Mathf.Sin(orientation.eulerAngles.y * Mathf.Deg2Rad)
+                 );
         transform.position = position;
     }
 

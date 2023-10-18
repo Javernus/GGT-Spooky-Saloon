@@ -56,12 +56,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets/Scripts/CandleFlicker.cs" />
-    <Compile Include="Assets/RigidBall.cs" />
+    <Compile Include="Assets/Scripts/RigidBall.cs" />
     <Compile Include="Assets/Scripts/CandleMovement.cs" />
-    <Compile Include="Assets/Collision.cs" />
-    <Compile Include="Assets/Scripts/NewBehaviourScript.cs" />
-    <Compile Include="Assets/TableCollider.cs" />
-    <Compile Include="Assets/Scripts/AABB.cs" />
+    <Compile Include="Assets/Scripts/TableCollider.cs" />
+    <Compile Include="Assets/Scripts/Collision.cs" />
+    <Compile Include="Assets/Scripts/BallController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets/Shaders/ShadowMapTest.shader" />

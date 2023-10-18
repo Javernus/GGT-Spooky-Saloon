@@ -22,32 +22,33 @@ public class BallControler : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            ball.velocity += 
-                ball.impulse * 
-                new Vector2(Mathf.Cos(ball.orientation), Mathf.Sin(ball.orientation));
+            ball.velocity += ball.impulse;
+            ball.impulse = 0f;
         }
 
         if (Input.GetKeyDown(KeyCode.W))
         {
-            ball.impulse += 1;
+            ball.impulse += 1f;
             Debug.Log("impule is " + ball.impulse);
         }
 
         if (Input.GetKeyDown(KeyCode.S))
         {
-            ball.impulse -= 1;
+            ball.impulse -= 1f;
             Debug.Log("impule is " + ball.impulse);
         }
 
         if (Input.GetKeyDown(KeyCode.A))
         {
-            ball.orientation += Mathf.PI / 2;
+            ball.orientation = Quaternion.Euler(0, ball.orientation.eulerAngles.y + 45, 0);
+            ball.transform.Rotate(0, 45, 0);
             Debug.Log("orientation is " + ball.orientation);
         }
 
         if (Input.GetKeyDown(KeyCode.D))
         {
-            ball.orientation -= Mathf.PI / 2;
+            ball.orientation = Quaternion.Euler(0, ball.orientation.eulerAngles.y - 45, 0);
+            ball.transform.Rotate(0, -45, 0);
             Debug.Log("orientation is " + ball.orientation);
         }
     }
