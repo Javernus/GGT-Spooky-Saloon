@@ -194,6 +194,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 99631367}
+  - component: {fileID: 99631368}
   m_Layer: 0
   m_Name: Pool
   m_TagString: Untagged
@@ -219,6 +220,20 @@ Transform:
   - {fileID: 518379821}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &99631368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 99631366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d21a10beb751eb34f829aae942ff2999, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tableCollider: {fileID: 0}
+  ballColliders: []
 --- !u!1 &105186800
 GameObject:
   m_ObjectHideFlags: 0
@@ -2956,9 +2971,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   impulse: 0
-  position: {x: 0, y: 0}
-  orientation: 0
-  velocity: {x: 0, y: 0}
+  position: {x: 1.17, y: 0, z: -0.3}
+  orientation: {x: 0, y: 0, z: 0, w: 0}
+  velocity: 0
   velocity_constraint: 3
   drag: 0
 --- !u!1 &1066804105
@@ -3159,6 +3174,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 786307997}
     m_Modifications:
+    - target: {fileID: 3328986902819440764, guid: 52c0e588598243bd6aeee7cb37eceb96, type: 3}
+      propertyPath: position.x
+      value: 0.32
+      objectReference: {fileID: 0}
     - target: {fileID: 4782687303538619184, guid: 52c0e588598243bd6aeee7cb37eceb96, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.75016695
@@ -5865,6 +5884,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ball White
       objectReference: {fileID: 0}
+    - target: {fileID: 2147635886525849061, guid: f01abb6c3add3a1408594882b8b1cbaf, type: 3}
+      propertyPath: m_Radius
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4940460553179320313, guid: f01abb6c3add3a1408594882b8b1cbaf, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -5910,7 +5933,8 @@ PrefabInstance:
       value: -6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6909556953618452800, guid: f01abb6c3add3a1408594882b8b1cbaf, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1764827954558007409, guid: f01abb6c3add3a1408594882b8b1cbaf, type: 3}
