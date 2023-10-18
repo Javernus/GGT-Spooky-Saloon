@@ -10,7 +10,7 @@ public class RigidBall : MonoBehaviour
     public Vector3 position;
     
     public Quaternion orientation;
-    public float velocity;
+    public Vector3 velocity;
     public float velocity_constraint;
     public float drag;
 
@@ -20,7 +20,7 @@ public class RigidBall : MonoBehaviour
     {
         position = transform.position;
         orientation = transform.rotation;
-        velocity = 0f;
+        velocity = new Vector3(0f, 0f, 0f);
         impulse = 0f;
         velocity_constraint = 15f;
         drag = 0.2f; // TODO make this a function of speed
@@ -28,38 +28,35 @@ public class RigidBall : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (velocity > velocity_constraint)
+        if (velocity.magnitude > velocity_constraint)
         {
-            velocity = velocity_constraint;
+            velocity = velocity.normalized * velocity_constraint;
         }
 
-        if (velocity < -velocity_constraint)
+        if (velocity.magnitude < -velocity_constraint)
         {
-            velocity = -velocity_constraint;
+            velocity = velocity.normalized * -velocity_constraint;
         }
 
-        if (velocity > 0f)
+        if (velocity.magnitude > 0f)
         {
-            velocity -= drag;
+            velocity -= velocity.normalized * drag;
         }
 
-        if (velocity < 0f)
+        if (velocity.magnitude < 0f)
         {
-            velocity += drag;
+            velocity += velocity.normalized * drag;
         }
 
         // if velocity is close to 0, set it to 0
-        if (velocity < drag && velocity > -drag)
+        if (velocity.magnitude < drag && velocity.magnitude > -drag)
         {
-            velocity = 0f;
+            velocity = new Vector3(0f, 0f, 0f);
         }
 
-        position += velocity * Time.fixedDeltaTime * 
-                new Vector3(
-                    Mathf.Cos(orientation.eulerAngles.y * Mathf.Deg2Rad),
-                    0f,
-                    Mathf.Sin(orientation.eulerAngles.y * Mathf.Deg2Rad)
-                 );
+        // update position
+        velocity -= velocity.normalized * drag * Time.fixedDeltaTime;
+        position += velocity * Time.fixedDeltaTime;
         transform.position = position;
     }
 

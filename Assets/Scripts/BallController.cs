@@ -32,7 +32,7 @@ public class BallControler : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            ball.velocity += ball.impulse;
+            ball.velocity = ball.orientation * Vector3.forward * ball.impulse;
             ball.impulse = 0f;
         }
 
@@ -63,7 +63,7 @@ public class BallControler : MonoBehaviour
         }
 
         // hide cue when ball is moving
-        if (ball.velocity > 0.1f)
+        if (ball.velocity.magnitude > 0.1f)
         {
             cue.SetActive(false);
         }
