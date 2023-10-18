@@ -27,7 +27,7 @@ public class BallControler : MonoBehaviour
 
         camera = GameObject.FindWithTag("MainCamera").transform;
 
-        cue = GameObject.Find("Cue");
+        cue = GameObject.FindWithTag("Cue");
         if (cue == null)
         {
             Debug.Log("BallControler: cue is null");
@@ -97,7 +97,7 @@ public class BallControler : MonoBehaviour
         }
 
         // hide cue when ball is moving
-        if (ball.velocity > 0.1f) {
+        if (ball.velocity.magnitude > 0.1f) {
             cue.SetActive(false);
         } else {
             if (timer > 2f) {
