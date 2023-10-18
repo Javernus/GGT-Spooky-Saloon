@@ -50,12 +50,7 @@ public class TableCollider : MonoBehaviour
             RigidBall ball = ballCollider.GetComponent<RigidBall>();
 
             // calculate position of ball in next frame
-            Vector3 position = ball.position + ball.velocity * Time.fixedDeltaTime * 
-                new Vector3(
-                    Mathf.Cos(ball.orientation.eulerAngles.y * Mathf.Deg2Rad),
-                    0f,
-                    Mathf.Sin(ball.orientation.eulerAngles.y * Mathf.Deg2Rad)
-                );
+            Vector3 position = ball.position + ball.velocity * Time.fixedDeltaTime;
                 
             if (!Is_in_table(position))
             {
