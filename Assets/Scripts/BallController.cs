@@ -6,6 +6,10 @@ public class BallControler : MonoBehaviour
 {
 
     private RigidBall ball;
+    private GameObject cue; 
+
+    // timer for cue
+    private float timer = 0f;
 
     // Start is called before the first frame update
     void Start()
@@ -14,6 +18,12 @@ public class BallControler : MonoBehaviour
         if (ball == null)
         {
             Debug.Log("BallControler: ball is null");
+        }
+
+        cue = GameObject.Find("Cue");
+        if (cue == null)
+        {
+            Debug.Log("BallControler: cue is null");
         }
     }
 
@@ -28,13 +38,13 @@ public class BallControler : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.W))
         {
-            ball.impulse += 1f;
+            ball.impulse += 5f;
             Debug.Log("impule is " + ball.impulse);
         }
 
         if (Input.GetKeyDown(KeyCode.S))
         {
-            ball.impulse -= 1f;
+            ball.impulse -= 5f;
             Debug.Log("impule is " + ball.impulse);
         }
 
@@ -51,5 +61,21 @@ public class BallControler : MonoBehaviour
             ball.transform.Rotate(0, 45, 0);
             Debug.Log("orientation is " + ball.orientation);
         }
+
+        // hide cue when ball is moving
+        if (ball.velocity > 0.1f)
+        {
+            cue.SetActive(false);
+        }
+        else
+        {
+            if (timer > 2f)
+            {
+                cue.SetActive(true);
+                timer = 0f;
+            }
+        }
+
+        timer += Time.deltaTime;
     }
 }
