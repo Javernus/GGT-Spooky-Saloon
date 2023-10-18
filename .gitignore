@@ -4,3 +4,4 @@ Temp/
 Logs/
 UserSettings/
 **/*.meta
+Assembly-CSharp.csproj
