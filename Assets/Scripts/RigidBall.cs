@@ -7,7 +7,7 @@ using UnityEngine;
 public class RigidBall : MonoBehaviour
 {
     public float impulse;
-    public Vector2 position;
+    public Vector3 position;
     
     public Quaternion orientation;
     public float velocity;
@@ -49,14 +49,15 @@ public class RigidBall : MonoBehaviour
         }
 
         // if velocity is close to 0, set it to 0
-        if (velocity < 0.1f && velocity > -0.1f)
+        if (velocity < drag && velocity > -drag)
         {
             velocity = 0f;
         }
 
         position += velocity * 
-                new Vector2(
+                new Vector3(
                     Mathf.Cos(orientation.eulerAngles.y * Mathf.Deg2Rad),
+                    0f,
                     Mathf.Sin(orientation.eulerAngles.y * Mathf.Deg2Rad)
                  );
         transform.position = position;
