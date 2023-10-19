@@ -8,6 +8,8 @@ public class Collision : MonoBehaviour
     private float radius;
     private Vector3[] originalPositions;
 
+    private AudioSource ballHit;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -16,9 +18,15 @@ public class Collision : MonoBehaviour
         Transform ballsContainer = transform.GetChild(0);
         originalPositions = new Vector3[ballsContainer.childCount];
 
+        ballHit = GameObject.FindWithTag("BallHit").GetComponent<AudioSource>();
+
         for (int i = 0; i < ballsContainer.childCount; i++) {
             balls.Add(ballsContainer.GetChild(i).GetComponent<RigidBall>());
             originalPositions[i] = balls[i].position;
+        }
+
+        if (balls.Count == 0) {
+            Debug.Log("No balls found");
         }
 
         radius = balls[0].transform.localScale.x / 2f;
@@ -33,7 +41,7 @@ public class Collision : MonoBehaviour
     }
 
     void PlayBallCollisionSound() {
-        // TODO play sound
+        ballHit.Play();
     }
 
     void HandleTableCollision(RigidBall ball) {
@@ -119,6 +127,8 @@ public class Collision : MonoBehaviour
                 // TODO: calculate movement back properly (see notes)
                 float percentage = CalculateOvershoot(velocity, position, otherPosition, distance);
                 ball.move(velocity * percentage);
+
+                PlayBallCollisionSound();
             }
         }
     }
@@ -137,11 +147,11 @@ public class Collision : MonoBehaviour
             HandleBallCollision(ball);
         }
 
-        // if (Input.GetKeyDown(KeyCode.R)) {
-        //     for (int i = 0; i < balls.Count; i++) {
-        //         balls[i].setPosition(originalPositions[i]);
-        //         balls[i].resetImpulse();
-        //     }
-        // }
+        if (Input.GetKeyDown(KeyCode.R)) {
+            for (int i = 0; i < balls.Count; i++) {
+                balls[i].setPosition(originalPositions[i]);
+                balls[i].resetImpulse();
+            }
+        }
     }
 }
