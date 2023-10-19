@@ -63,24 +63,20 @@ public class Collision : MonoBehaviour
             float percentage = CalculatePercentage(velocity.x, distanceFromMinX);
             ball.move(velocity * percentage);
             ball.invertVelocityX();
-            PlayTableCollisionSound();
         } else if (distanceFromMaxX < 0f) {
             float percentage = CalculatePercentage(velocity.x, distanceFromMaxX);
             ball.move(velocity * percentage);
             ball.invertVelocityX();
-            PlayTableCollisionSound();
         }
 
         if (distanceFromMinZ < 0f) {
             float percentage = CalculatePercentage(velocity.y, distanceFromMinZ);
             ball.move(velocity * percentage);
             ball.invertVelocityY();
-            PlayTableCollisionSound();
         } else if (distanceFromMaxZ < 0f) {
             float percentage = CalculatePercentage(velocity.y, distanceFromMaxZ);
             ball.move(velocity * percentage);
             ball.invertVelocityY();
-            PlayTableCollisionSound();
         }
     }
 
