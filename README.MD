@@ -29,5 +29,3 @@ This is a small game about playing pool in a spooky saloon with floating candles
 - Added random offset to ball angle when shooting
 
 ## To Do
-
-- Add random offset to ball angle when shooting

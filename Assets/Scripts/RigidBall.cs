@@ -16,6 +16,9 @@ public class RigidBall : MonoBehaviour {
     }
 
     public void addCollision(Vector2 impulse) {
+        // add some randomness to the impulse
+        impulse += new Vector2(Random.Range(-0.05f, 0.05f), Random.Range(-0.05f, 0.05f)) * impulse.magnitude;
+
         velocity += impulse;
         setOrientationWithVector(velocity);
         canMove = false;
