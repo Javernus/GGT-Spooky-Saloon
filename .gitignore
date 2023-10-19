@@ -1,5 +1,4 @@
 .vscode
-**/*.meta
 *.csproj
 ProjectSettings/ProjectSettings.asset
 

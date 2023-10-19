@@ -22,8 +22,6 @@ public class Collision : MonoBehaviour
         }
 
         radius = balls[0].transform.localScale.x / 2f;
-
-        Debug.Log(tableCollider.bounds.min.x + ", " + tableCollider.bounds.min.z + ", " + tableCollider.bounds.max.x + ", " + tableCollider.bounds.max.z);
     }
 
     float CalculatePercentage(float value, float distance) {
@@ -84,14 +82,6 @@ public class Collision : MonoBehaviour
         float vValue = projected.magnitude;
         float distanceBack = Mathf.Sqrt(Mathf.Pow(2f * radius, 2f) - Mathf.Pow(distanceFromVelocity, 2f)) - vValue;
 
-        Debug.Log("distanceFromVelocity: " + distanceFromVelocity);
-        Debug.Log("vValue: " + vValue);
-        Debug.Log("distanceBack: " + distanceBack);
-        Debug.Log("velocity: " + velocity);
-        Debug.Log("velocity.magnitude: " + velocity.magnitude);
-        Debug.Log("distance: " + distance);
-        Debug.Log("distance / velocity.magnitude: " + distance / velocity.magnitude);
-
         return -distanceBack / velocity.magnitude;
     }
 
@@ -124,7 +114,6 @@ public class Collision : MonoBehaviour
                 ball.addCollision(impulse);
 
                 impulse = -collisionNormal * Vector2.Dot(-velocityDifference, collisionNormal);
-                Debug.Log(impulse);
                 otherBall.addCollision(impulse);
 
                 // TODO: calculate movement back properly (see notes)
