@@ -31,4 +31,3 @@ This is a small game about playing pool in a spooky saloon with floating candles
 ## To Do
 
 - Add random offset to ball angle when shooting
-- Holding key for repeat movement
