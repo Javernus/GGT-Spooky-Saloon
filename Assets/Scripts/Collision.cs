@@ -133,6 +133,28 @@ public class Collision : MonoBehaviour
         }
     }
 
+    void HandleOutsideTable(RigidBall ball) {
+        Vector3 position = ball.position;
+
+        float distanceFromMinX = (position.x - radius) - tableCollider.bounds.min.x;
+        float distanceFromMaxX = tableCollider.bounds.max.x - (position.x + radius);
+        float distanceFromMinZ = (position.z - radius) - tableCollider.bounds.min.z;
+        float distanceFromMaxZ = tableCollider.bounds.max.z - (position.z + radius);
+
+        // If outside bounds, move it to against the edge
+        if (distanceFromMinX < 0f) {
+            ball.setPosition(new Vector3(tableCollider.bounds.min.x + radius, position.y, position.z));
+        } else if (distanceFromMaxX < 0f) {
+            ball.setPosition(new Vector3(tableCollider.bounds.max.x - radius, position.y, position.z));
+        }
+
+        if (distanceFromMinZ < 0f) {
+            ball.setPosition(new Vector3(position.x, position.y, tableCollider.bounds.min.z + radius));
+        } else if (distanceFromMaxZ < 0f) {
+            ball.setPosition(new Vector3(position.x, position.y, tableCollider.bounds.max.z - radius));
+        }
+    }
+
     // Update is called once per frame
     void FixedUpdate() {
         // Loop over all balls
@@ -145,6 +167,7 @@ public class Collision : MonoBehaviour
 
             HandleTableCollision(ball);
             HandleBallCollision(ball);
+            HandleOutsideTable(ball);
         }
 
         if (Input.GetKeyDown(KeyCode.R)) {
