@@ -85,23 +85,23 @@ public class BallControler : MonoBehaviour
             Shoot();
         }
 
-        if (Input.GetKeyDown(KeyCode.W)) {
+        if (Input.GetKey(KeyCode.W)) {
             impulse = Mathf.Clamp(impulse + alt, 0f, 2f);
             SetCuePosition(impulse);
         }
 
-        if (Input.GetKeyDown(KeyCode.S)) {
+        if (Input.GetKey(KeyCode.S)) {
             impulse = Mathf.Clamp(impulse - alt, 0f, 2f);
             SetCuePosition(impulse);
         }
 
-        if (Input.GetKeyDown(KeyCode.A)) {
+        if (Input.GetKey(KeyCode.A)) {
             GetCurrentAngleFromBall();
             orientation -= Mathf.PI / 8f * alt;
             ChangeOrientation();
         }
 
-        if (Input.GetKeyDown(KeyCode.D)) {
+        if (Input.GetKey(KeyCode.D)) {
             GetCurrentAngleFromBall();
             orientation += Mathf.PI / 8f * alt;
             ChangeOrientation();
