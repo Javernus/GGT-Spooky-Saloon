@@ -10,9 +10,13 @@ public class BallControler : MonoBehaviour
 
     // timer for cue
     private float timer = 0f;
+    private bool isShooting = false;
     private float impulse = 0.25f;
     private float alt = 0.25f;
     private float orientation = 0f;
+
+    private Vector3 originalCuePosition;
+    float cueAngleConstant = 0.1051f;
 
     // Start is called before the first frame update
     void Start()
@@ -28,60 +32,87 @@ public class BallControler : MonoBehaviour
         camera = GameObject.FindWithTag("MainCamera").transform;
 
         cue = GameObject.FindWithTag("Cue");
-        if (cue == null)
-        {
+
+        if (cue == null) {
             Debug.Log("BallControler: cue is null");
         }
+
+        originalCuePosition = cue.transform.position;
+        SetCuePosition(impulse);
+    }
+
+    void GetCurrentAngleFromBall() {
+        orientation = ball.transform.rotation.eulerAngles.y * Mathf.Deg2Rad;
     }
 
     void ChangeOrientation() {
         ball.setOrientationWithRadians(orientation);
+        SetCuePosition(impulse);
+    }
+
+    void SetCuePosition(float i) {
+        float distanceFromBall = -(0.3f + i) * 0.1f;
+
+        Vector3 angleVector = new Vector3(
+            Mathf.Cos(orientation),
+            0f,
+            -Mathf.Sin(orientation)
+        );
+
+        Vector3 cuePosition = ball.transform.position + angleVector * distanceFromBall + new Vector3(0f, -distanceFromBall * cueAngleConstant, 0f);
+
+        cue.transform.position = cuePosition;
+
+        cue.transform.rotation = Quaternion.Euler(
+            0f,
+            orientation * Mathf.Rad2Deg,
+            -6f
+        );
+    }
+
+    void Shoot() {
+        isShooting = true;
+        timer = 0f;
     }
 
     // Update is called once per frame
     void Update() {
         if (Input.GetKeyDown(KeyCode.Space)) {
-            if (!ball.canMove) {
-                Debug.Log("Ball cannot move");
-                return;
-            } else {
-                Debug.Log("Ball can move");
-                ball.canMove = false;
-            }
+            if (!ball.canMove) return;
 
-            ball.addImpulse(impulse);
+            ball.canMove = false;
+            GetCurrentAngleFromBall();
+            Shoot();
         }
 
         if (Input.GetKeyDown(KeyCode.W)) {
             impulse = Mathf.Clamp(impulse + alt, 0f, 2f);
-            Debug.Log("impulse is " + impulse);
+            SetCuePosition(impulse);
         }
 
         if (Input.GetKeyDown(KeyCode.S)) {
             impulse = Mathf.Clamp(impulse - alt, 0f, 2f);
-            Debug.Log("impulse is " + impulse);
+            SetCuePosition(impulse);
         }
 
         if (Input.GetKeyDown(KeyCode.A)) {
-            orientation -= Mathf.PI / 32f * alt;
+            GetCurrentAngleFromBall();
+            orientation -= Mathf.PI / 8f * alt;
             ChangeOrientation();
-            Debug.Log("orientation is " + orientation);
         }
 
         if (Input.GetKeyDown(KeyCode.D)) {
-            orientation += Mathf.PI / 32f * alt;
+            GetCurrentAngleFromBall();
+            orientation += Mathf.PI / 8f * alt;
             ChangeOrientation();
-            Debug.Log("orientation is " + orientation);
         }
 
         if (Input.GetKeyDown(KeyCode.LeftAlt)) {
             alt = 0.025f;
-            Debug.Log("alt is on");
         }
 
         if (Input.GetKeyUp(KeyCode.LeftAlt)) {
             alt = 0.25f;
-            Debug.Log("alt is off");
         }
 
         if (Input.GetKeyDown(KeyCode.P)) {
@@ -96,16 +127,26 @@ public class BallControler : MonoBehaviour
             camera.rotation = Quaternion.Euler(90f, 180f, 0f);
         }
 
-        // hide cue when ball is moving
-        if (ball.velocity.magnitude > 0.1f) {
-            cue.SetActive(false);
+        if (ball.canMove) {
+            GetCurrentAngleFromBall();
+            SetCuePosition(impulse);
+            cue.SetActive(true);
         } else {
-            if (timer > 2f) {
-                cue.SetActive(true);
-                timer = 0f;
-            }
+            cue.SetActive(false);
         }
 
-        timer += Time.deltaTime;
+        if (isShooting) {
+            cue.SetActive(true);
+            if (timer > 0.5f) {
+                isShooting = false;
+                cue.SetActive(false);
+                ball.addImpulse(impulse);
+            } else {
+                timer += Time.deltaTime;
+
+                // Move the cue to the ball
+                SetCuePosition(impulse * (0.5f - timer) * 2f);
+            }
+        }
     }
 }

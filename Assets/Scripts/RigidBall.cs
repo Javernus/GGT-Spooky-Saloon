@@ -27,6 +27,12 @@ public class RigidBall : MonoBehaviour {
         canMove = false;
     }
 
+    public void resetImpulse() {
+        velocity = new Vector2(0f, 0f);
+        orientation = new Vector2(1f, 0f);
+        canMove = true;
+    }
+
     public void invertVelocityX() {
         velocity = new Vector2(velocity.x * -1f, velocity.y);
         setOrientationWithVector(velocity);
@@ -39,6 +45,11 @@ public class RigidBall : MonoBehaviour {
 
     public void move(Vector2 p) {
         position += new Vector3(p.x, 0f, p.y);
+        transform.position = originalPosition + position;
+    }
+
+    public void setPosition(Vector3 p) {
+        position = p;
         transform.position = originalPosition + position;
     }
 
@@ -73,7 +84,7 @@ public class RigidBall : MonoBehaviour {
         }
 
         velocity -= drag * velocity * Time.fixedDeltaTime;
-        Vector2 delta = velocity * Time.deltaTime;
+        Vector2 delta = velocity * Time.fixedDeltaTime;
         move(delta);
     }
 }

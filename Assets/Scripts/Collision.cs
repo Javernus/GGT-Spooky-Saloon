@@ -6,6 +6,7 @@ public class Collision : MonoBehaviour
     private BoxCollider tableCollider; // get table AABB
     private List<RigidBall> balls = new List<RigidBall>();
     private float radius;
+    private Vector3[] originalPositions;
 
     // Start is called before the first frame update
     void Start()
@@ -13,9 +14,11 @@ public class Collision : MonoBehaviour
         tableCollider = transform.GetChild(1).GetComponent<BoxCollider>();
 
         Transform ballsContainer = transform.GetChild(0);
+        originalPositions = new Vector3[ballsContainer.childCount];
 
         for (int i = 0; i < ballsContainer.childCount; i++) {
             balls.Add(ballsContainer.GetChild(i).GetComponent<RigidBall>());
+            originalPositions[i] = balls[i].position;
         }
 
         radius = balls[0].transform.localScale.x / 2f;
@@ -24,15 +27,19 @@ public class Collision : MonoBehaviour
     }
 
     float CalculatePercentage(float value, float distance) {
-        return -Mathf.Abs((value - distance) / value);
+        return -Mathf.Abs(distance / value);
     }
 
     void PlayTableCollisionSound() {
         // TODO play sound
     }
 
+    void PlayBallCollisionSound() {
+        // TODO play sound
+    }
+
     void HandleTableCollision(RigidBall ball) {
-        Vector3 position = ball.transform.position;
+        Vector3 position = ball.position;
         Vector2 velocity = ball.velocity;
         float deltaTime = Time.deltaTime;
 
@@ -44,28 +51,48 @@ public class Collision : MonoBehaviour
         float distanceFromMaxZ = tableCollider.bounds.max.z - (position.z + radius);
 
         if (distanceFromMinX < 0f) {
+            float percentage = CalculatePercentage(velocity.x, distanceFromMinX);
+            ball.move(velocity * percentage);
             ball.invertVelocityX();
-            float percentage = CalculatePercentage(radius, distanceFromMinX);
-            ball.move(normalizedVelocity * percentage * radius);
             PlayTableCollisionSound();
         } else if (distanceFromMaxX < 0f) {
+            float percentage = CalculatePercentage(velocity.x, distanceFromMaxX);
+            ball.move(velocity * percentage);
             ball.invertVelocityX();
-            float percentage = CalculatePercentage(radius, distanceFromMaxX);
-            ball.move(normalizedVelocity * percentage * radius);
             PlayTableCollisionSound();
         }
 
         if (distanceFromMinZ < 0f) {
+            float percentage = CalculatePercentage(velocity.y, distanceFromMinZ);
+            ball.move(velocity * percentage);
             ball.invertVelocityY();
-            float percentage = CalculatePercentage(radius, distanceFromMinZ);
-            ball.move(normalizedVelocity * percentage * radius);
             PlayTableCollisionSound();
         } else if (distanceFromMaxZ < 0f) {
+            float percentage = CalculatePercentage(velocity.y, distanceFromMaxZ);
+            ball.move(velocity * percentage);
             ball.invertVelocityY();
-            float percentage = CalculatePercentage(radius, distanceFromMaxZ);
-            ball.move(normalizedVelocity * percentage * radius);
             PlayTableCollisionSound();
         }
+    }
+
+    float CalculateOvershoot(Vector2 velocity, Vector3 ballPosition, Vector3 otherBallPosition, float distance) {
+        Vector3 velocity3D = new Vector3(velocity.x, 0f, velocity.y).normalized;
+        Vector3 positionDifference = otherBallPosition - ballPosition;
+        Vector3 projected = Vector3.Project(positionDifference, velocity3D);
+        float distanceFromVelocity = Vector3.Distance(positionDifference, projected);
+
+        float vValue = projected.magnitude;
+        float distanceBack = Mathf.Sqrt(Mathf.Pow(2f * radius, 2f) - Mathf.Pow(distanceFromVelocity, 2f)) - vValue;
+
+        Debug.Log("distanceFromVelocity: " + distanceFromVelocity);
+        Debug.Log("vValue: " + vValue);
+        Debug.Log("distanceBack: " + distanceBack);
+        Debug.Log("velocity: " + velocity);
+        Debug.Log("velocity.magnitude: " + velocity.magnitude);
+        Debug.Log("distance: " + distance);
+        Debug.Log("distance / velocity.magnitude: " + distance / velocity.magnitude);
+
+        return -distanceBack / velocity.magnitude;
     }
 
     void HandleBallCollision(RigidBall ball) {
@@ -101,8 +128,8 @@ public class Collision : MonoBehaviour
                 otherBall.addCollision(impulse);
 
                 // TODO: calculate movement back properly (see notes)
-                float percentage = CalculatePercentage(radius * 2f, distance);
-                ball.move(collisionNormal * percentage);
+                float percentage = CalculateOvershoot(velocity, position, otherPosition, distance);
+                ball.move(velocity * percentage);
             }
         }
     }
@@ -120,5 +147,12 @@ public class Collision : MonoBehaviour
             HandleTableCollision(ball);
             HandleBallCollision(ball);
         }
+
+        // if (Input.GetKeyDown(KeyCode.R)) {
+        //     for (int i = 0; i < balls.Count; i++) {
+        //         balls[i].setPosition(originalPositions[i]);
+        //         balls[i].resetImpulse();
+        //     }
+        // }
     }
 }
