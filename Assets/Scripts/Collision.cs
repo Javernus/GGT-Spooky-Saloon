@@ -8,7 +8,9 @@ public class Collision : MonoBehaviour
     private float radius;
     private Vector3[] originalPositions;
 
-    private AudioSource ballHit;
+    public AudioSource ballHit;
+    public AudioClip[] ballHitClip;
+
 
     // Start is called before the first frame update
     void Start()
@@ -36,12 +38,13 @@ public class Collision : MonoBehaviour
         return -Mathf.Abs(distance / value);
     }
 
-    void PlayTableCollisionSound() {
-        // TODO play sound
+
+    AudioClip GetRandomClip() {
+        return ballHitClip[Random.Range(0, ballHitClip.Length)];
     }
 
     void PlayBallCollisionSound() {
-        ballHit.Play();
+        ballHit.PlayOneShot(GetRandomClip());
     }
 
     void HandleTableCollision(RigidBall ball) {

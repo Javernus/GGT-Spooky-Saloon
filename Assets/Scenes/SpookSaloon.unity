@@ -232,6 +232,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83e7d777c0c1244a0bcd83e953bf34b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ballHit: {fileID: 1645043720}
+  ballHitClip:
+  - {fileID: 8300000, guid: 1f2796780d059b71792e3435f5c73664, type: 3}
+  - {fileID: 8300000, guid: 8dc993c1cf6753cdeb48e23615f0fab9, type: 3}
+  - {fileID: 8300000, guid: 5a14bfdd0ae0a7a48b3aaa04e27be434, type: 3}
+  tableHit: {fileID: 0}
 --- !u!1 &105186800
 GameObject:
   m_ObjectHideFlags: 0
@@ -4545,8 +4551,8 @@ GameObject:
   - component: {fileID: 1645043721}
   - component: {fileID: 1645043720}
   m_Layer: 0
-  m_Name: ballHit
-  m_TagString: ballHit
+  m_Name: BallHit
+  m_TagString: BallHit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
