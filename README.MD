@@ -30,7 +30,5 @@ This is a small game about playing pool in a spooky saloon with floating candles
 
 ## To Do
 
-- Add collision sounds for a ball hitting the table
-- Add collision sounds for a ball hitting another ball
 - Add random offset to ball angle when shooting
 - Holding key for repeat movement
